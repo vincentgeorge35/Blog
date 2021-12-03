@@ -1,4 +1,5 @@
 import 'package:blog_app/screens/home/blog_home.dart';
+import 'package:blog_app/screens/loading.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'BLOG APP',
-      home: BlogHome(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Loading(),
+        '/home': (context) => BlogHome(),
+      },
     );
   }
 }
