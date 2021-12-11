@@ -1,5 +1,5 @@
-import 'package:blog_app/constants.dart';
 import 'package:blog_app/screens/home/components/body.dart';
+import 'package:blog_app/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 class BlogHome extends StatefulWidget {
@@ -10,24 +10,6 @@ class BlogHome extends StatefulWidget {
 }
 
 class _BlogHomeState extends State<BlogHome> {
-  Widget postCard(post) {
-    return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Text(
-          post.body,
-          style: TextStyle(
-            fontSize: 14.0,
-            fontFamily: 'Manrope',
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +29,7 @@ class _BlogHomeState extends State<BlogHome> {
             color: Colors.grey[50],
             fontSize: 35.0,
             fontWeight: FontWeight.w700,
-            fontFamily: 'Pacifico',
+            fontFamily: 'Manrope',
           ),
         ),
       ),

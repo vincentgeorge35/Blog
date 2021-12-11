@@ -1,5 +1,5 @@
 import 'package:blog_app/screens/home/blog_home.dart';
-import 'package:blog_app/screens/loading.dart';
+import 'package:blog_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 void main() {

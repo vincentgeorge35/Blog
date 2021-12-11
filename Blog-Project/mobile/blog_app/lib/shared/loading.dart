@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -28,13 +29,9 @@ class _LoadingState extends State<Loading> {
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
-        child: Text(
-          'Loading...',
-          style: TextStyle(
-            color: Colors.amber[300],
-            fontSize: 60.0,
-            fontWeight: FontWeight.bold,
-          ),
+        child: SpinKitHourGlass(
+          color: Colors.white,
+          size: 65.0,
         ),
       ),
     );

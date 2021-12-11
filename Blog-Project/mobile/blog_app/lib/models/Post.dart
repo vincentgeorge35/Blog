@@ -23,21 +23,21 @@ List<Post> posts = [
           'Shebrand was birthed to raise African women to become 3G; global voices, godly vessels and guaranteed successes. The average African woman is trained to be silent and never heard. Meanwhile she might have the potentials to change the globe.'),
   Post(
       id: 2,
-      author: 'John Doe',
+      author: 'Steve Hew',
       date: DateTime.now(),
       title: 'Dolor Sunt',
       body:
           'Although this is gradually changing, we exist to raise more balanced women who will get to the climax of their dreams regardless of their culture, tribe, color or background. We want to raise these exceptional women to be global answers yet balanced women.'),
   Post(
       id: 3,
-      author: 'John Doe',
+      author: 'R. Lukaku',
       date: DateTime.now(),
       title: 'Tinkum Amet',
       body:
           'In the last two years, we have had impactful conferences that have changed about 230 ladies in Ebonyi and we have followed up on some of them who required mentorship every two weeks on a Shebrand platform where books, talks and many more are given to them.'),
   Post(
       id: 4,
-      author: 'John Doe',
+      author: 'Pulisic',
       date: DateTime.now(),
       title: 'Atesunt Jume',
       body:
