@@ -1,3 +1,4 @@
+using System;
 namespace API.Models
 {
     public class Post
@@ -6,6 +7,6 @@ namespace API.Models
         public string title { get; set; }
         public string body { get; set; }
         public string author { get; set; }
-        public string created_at { get; set; }
+        public DateTime created_at { get; set; }
     }
 }

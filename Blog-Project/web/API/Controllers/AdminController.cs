@@ -1,12 +1,10 @@
+using System;
 using System.Data;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
 using API.Models;
+using API.ViewModels;
 
 namespace API.Controllers
 {
@@ -75,31 +73,46 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public JsonResult Post(Admin admin)
+        public JsonResult Post(AdminModel admin)
         {
             string query = @"
                 insert into dbo.Admin
                 values(@name, @email, @password)
             ";
 
+            Admin data = new Admin();
+            data.name = admin.name;
+            data.email = admin.email;
+            data.password = admin.password;
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    // myCommand.Parameters.AddWithValue("@id", admin.id);
-                    myCommand.Parameters.AddWithValue("@name", admin.name);
-                    myCommand.Parameters.AddWithValue("@email", admin.email);
-                    myCommand.Parameters.AddWithValue("@password", admin.password);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        
+                        myCommand.Parameters.AddWithValue("@name", data.name);
+                        myCommand.Parameters.AddWithValue("@email", data.email);
+                        myCommand.Parameters.AddWithValue("@password", data.password);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+                 
             }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+            
 
             return new JsonResult("Created Successfuly");
         }
@@ -108,8 +121,8 @@ namespace API.Controllers
         public JsonResult Put(Admin admin)
         {
             string query = @"
-                update dbo.Admin
-                set name = @name,
+                update dbo.Admin set 
+                name = @name,
                 email = @email,
                 password = @password
                 where id = @id
