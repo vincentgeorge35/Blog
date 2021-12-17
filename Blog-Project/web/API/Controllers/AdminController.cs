@@ -28,16 +28,24 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult(table);
@@ -56,17 +64,25 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", id);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult(table);
@@ -119,7 +135,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public JsonResult Put(Admin admin)
+        public JsonResult Put(AdminModel admin)
         {
             string query = @"
                 update dbo.Admin set 
@@ -128,24 +144,37 @@ namespace API.Controllers
                 password = @password
                 where id = @id
             ";
-
+            Admin data = new Admin();
+            data.id = admin.id;
+            data.name = admin.name;
+            data.email = admin.email;
+            admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
+            data.password = admin.password;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", admin.id);
-                    myCommand.Parameters.AddWithValue("@name", admin.name);
-                    myCommand.Parameters.AddWithValue("@email", admin.email);
-                    myCommand.Parameters.AddWithValue("@password", admin.password);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", data.id);
+                        myCommand.Parameters.AddWithValue("@name", data.name);
+                        myCommand.Parameters.AddWithValue("@email", data.email);
+                        myCommand.Parameters.AddWithValue("@password", data.password);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult("Updated Successfuly");
@@ -162,17 +191,25 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", id);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult("Deleted Successfuly");

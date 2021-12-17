@@ -27,16 +27,24 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult(table);
@@ -52,17 +60,25 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", id);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult(table);
@@ -125,20 +141,28 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", post.id);
-                    myCommand.Parameters.AddWithValue("@title", post.title);
-                    myCommand.Parameters.AddWithValue("@author", post.author);
-                    myCommand.Parameters.AddWithValue("@body", post.body);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", post.id);
+                        myCommand.Parameters.AddWithValue("@title", post.title);
+                        myCommand.Parameters.AddWithValue("@author", post.author);
+                        myCommand.Parameters.AddWithValue("@body", post.body);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult("Post Updated Successfuly");
@@ -155,17 +179,25 @@ namespace API.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            try
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
                 {
-                    myCommand.Parameters.AddWithValue("@id", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                    {
+                        myCommand.Parameters.AddWithValue("@id", id);
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader);
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
+            }
+            catch (System.Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
             }
 
             return new JsonResult("Post Deleted Successfuly");
