@@ -83,6 +83,7 @@ namespace API.Controllers
             Admin data = new Admin();
             data.name = admin.name;
             data.email = admin.email;
+            admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
             data.password = admin.password;
 
             DataTable table = new DataTable();
