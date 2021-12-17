@@ -1,4 +1,5 @@
 import 'package:blog_app/screens/home/blog_home.dart';
+import 'package:blog_app/screens/auth/login.dart';
 import 'package:blog_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Loading(),
         '/home': (context) => BlogHome(),
+        '/login':(context) => Login(),
       },
     );
   }
 }
+

@@ -13,7 +13,7 @@ class _BlogHomeState extends State<BlogHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: bgColor,
       appBar: buildAppBar(),
       body: Body(),
     );
@@ -23,19 +23,46 @@ class _BlogHomeState extends State<BlogHome> {
     return AppBar(
       title: Padding(
         padding: const EdgeInsets.only(bottom: mDefaultSize / 1.5),
-        child: Text(
-          'Listacc blog',
-          style: TextStyle(
-            color: Colors.grey[50],
-            fontSize: 35.0,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Manrope',
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Listacc blog',
+              style: TextStyle(
+                color: Colors.grey[50],
+                fontSize: 25.0,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Manrope',
+              ),
+            ),
+            SizedBox(
+              width: 40,
+            ),
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              icon: Icon(
+                Icons.login,
+                color: Colors.white,
+                size: mDefaultSize,
+              ),
+              label: Text(
+                'login',
+                style: TextStyle(
+                  fontSize: mDefaultSize,
+                ),
+              ),
+            )
+          ],
         ),
       ),
       elevation: 0,
       centerTitle: true,
-      backgroundColor: Colors.blue[400],
+      backgroundColor: primaryColor,
     );
   }
 }
