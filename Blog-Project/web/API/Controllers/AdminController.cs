@@ -1,218 +1,176 @@
+using System.Security.Claims;
 using System;
-using System.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
-using API.Models;
+using System.Linq;
+using API.EFCore;
 using API.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminController: ControllerBase
+    [Authorize]
+    public class AdminController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        public AdminController(IConfiguration configuration)
+        private readonly blogContext _bContext;
+
+        public AdminController(blogContext bContext)
         {
-            _configuration = configuration;
+            _bContext = bContext;
         }
 
         [HttpGet]
-        public JsonResult Get()
+        public AdminModel GetCurrentUser()
         {
-            string query = @"
-                select * from dbo.Admin
-            ";
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
-            try
+            if (identity != null)
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                var userClaims = identity.Claims;
+
+                return new AdminModel
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
+                    name = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value,
+                    email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
+                    id = Int32.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                    password = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Hash)?.Value
+                };
 
-                Console.WriteLine(ex.Message);
+                
             }
 
-            return new JsonResult(table);
-        }
-       
-
-
-        [HttpGet("{id}")]
-        public JsonResult Get(int id)
-        {
-            string query = @"
-                select * from dbo.Admin
-                where id = @id
-            ";
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
-            try
-            {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-                {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", id);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-            }
-
-            return new JsonResult(table);
+            return null;
         }
 
+        [HttpGet("Getall")]
+        public IActionResult GetAll()
+        {
+            var admins = _bContext.Admin.ToList();
+            if (admins is null)
+            {
+                return BadRequest("No data was found");
+            }
+            return Ok(admins);
+        }
+
+        [Route("Get/{id}")]
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var admin = _bContext.Admin.Find(id);
+
+            if (admin is null)
+            {
+                return BadRequest("No Data was found");
+            }
+            return Ok(admin);
+        }
+
+        [Route("create")]
         [HttpPost]
-        public JsonResult Post(AdminModel admin)
+        public IActionResult post(AdminModel admin)
         {
-            string query = @"
-                insert into dbo.Admin
-                values(@name, @email, @password)
-            ";
-
-            Admin data = new Admin();
-            data.name = admin.name;
-            data.email = admin.email;
-            admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
-            data.password = admin.password;
-
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
             try
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                Admin NewAdmin = new Admin();
+                NewAdmin.Name = admin.name;
+                NewAdmin.Email = admin.email;
+                admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
+                NewAdmin.Password = admin.password;
+
+                if (string.IsNullOrEmpty(NewAdmin.Name) || 
+                    string.IsNullOrEmpty(NewAdmin.Email) || 
+                    string.IsNullOrEmpty(NewAdmin.Password)
+                    )
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        
-                        myCommand.Parameters.AddWithValue("@name", data.name);
-                        myCommand.Parameters.AddWithValue("@email", data.email);
-                        myCommand.Parameters.AddWithValue("@password", data.password);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    return BadRequest(" Please no null is accepted");
                 }
-                 
+                try
+                {
+                    _bContext.Admin.Add(NewAdmin);
+                    _bContext.SaveChanges();
+
+                    return Ok(NewAdmin); 
+                }
+                catch (System.Exception exc)
+                {
+
+                    return BadRequest(exc.Message);
+                }
+                
             }
             catch (System.Exception ex)
             {
 
-                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
             
-
-            return new JsonResult("Created Successfuly");
         }
 
+        [Route("update")]
         [HttpPut]
-        public JsonResult Put(AdminModel admin)
+        public IActionResult put(AdminModel admin)
         {
-            string query = @"
-                update dbo.Admin set 
-                name = @name,
-                email = @email,
-                password = @password
-                where id = @id
-            ";
-            Admin data = new Admin();
-            data.id = admin.id;
-            data.name = admin.name;
-            data.email = admin.email;
-            admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
-            data.password = admin.password;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
             try
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                var data = _bContext.Admin.Find(admin.id);
+                if (data is null)
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", data.id);
-                        myCommand.Parameters.AddWithValue("@name", data.name);
-                        myCommand.Parameters.AddWithValue("@email", data.email);
-                        myCommand.Parameters.AddWithValue("@password", data.password);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    return BadRequest("Incorrect Id");
                 }
+                data.Id = admin.id;
+                data.Name = admin.name;
+                data.Email = admin.email;
+                admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
+                data.Password = admin.password;
+
+                if (string.IsNullOrEmpty(data.Name) ||
+                    string.IsNullOrEmpty(data.Email) ||
+                    string.IsNullOrEmpty(data.Password) ||
+                    data.Id == 0
+                    )
+                {
+                    return BadRequest(" Please null value is not accepted");
+                }
+                try
+                {
+                    
+                    _bContext.Admin.Attach(data);
+                    _bContext.SaveChanges();
+
+                    return Ok(data);
+                }
+                catch (System.Exception exc)
+                {
+
+                    return BadRequest(exc.Message);
+                }
+
             }
-            catch (System.Exception ex)
+            catch (System.Exception exc)
             {
 
-                Console.WriteLine(ex.Message);
+                return BadRequest(exc.Message);
             }
-
-            return new JsonResult("Updated Successfuly");
         }
 
-        [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+
+        [Route("Delete/{id}")]
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            string query = @"
-                delete from dbo.Admin
-                where id = @id
-            ";
+            var admin = _bContext.Admin.Find(id);
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
-            try
+            if (admin is null)
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-                {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", id);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
+                return BadRequest("No Data was found");
             }
 
-            return new JsonResult("Deleted Successfuly");
+            _bContext.Admin.Remove(admin);
+            _bContext.SaveChanges();
+
+            return Ok("Deleted successfuly...");
         }
     }
 }

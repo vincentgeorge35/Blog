@@ -1,10 +1,9 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
-using API.Models;
+using System.Globalization;
+using System.Linq;
+using API.EFCore;
 using API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace API.Controllers
 {
@@ -12,195 +11,154 @@ namespace API.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        public PostController(IConfiguration configuration)
+        private readonly blogContext _bContext;
+
+        public PostController(blogContext bContext)
         {
-            _configuration = configuration;
+            _bContext = bContext;
         }
 
+        //api/post
         [HttpGet]
-        public JsonResult Get()
+        public IActionResult GetAll()
         {
-            string query = @"
-                select * from dbo.post
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
+            // var allpost = _bContext.Post.ToList();
             try
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                var posts = _bContext.Post.ToList();
+                Console.WriteLine(posts);
+                if (posts is null)
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    return BadRequest("No post was found");
                 }
+                return Ok(posts);
             }
             catch (System.Exception ex)
             {
 
-                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(table);
+            // return Ok(allpost);
         }
 
-        [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        [Route("Get/{id}")]
+        [HttpGet]
+        //api/post/get/id
+        public IActionResult Get(int id)
         {
-            string query = @"
-                select * from dbo.post
-                where id = @id
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
-            try
-            {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-                {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", id);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
+            var post = _bContext.Post.Find(id);
 
-                Console.WriteLine(ex.Message);
+            if (post is null)
+            {
+                return BadRequest("No Data was found");
             }
-
-            return new JsonResult(table);
+            return Ok(post);
         }
 
+        [Route("create")]
         [HttpPost]
-        public JsonResult Post(PostModel post)
+        public IActionResult post(PostModel post)
         {
-            string query = @"
-                insert into dbo.post
-                values(@author, @title, @body, @created_at)
-                
-            ";
-
-            Post data = new Post();
-            data.author = post.author;
-            data.title = post.title;
-            data.body = post.body;
-            data.created_at = DateTime.Now;
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
             try
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                Post newpost = new Post();
+                newpost.Title = post.title;
+                newpost.Author = post.author;
+                newpost.CreatedAt = DateTime.Now.ToString("F", CultureInfo.CreateSpecificCulture("en-US"));
+                newpost.Body= post.body;
+
+                if (string.IsNullOrEmpty(newpost.Title) || 
+                    string.IsNullOrEmpty(newpost.Body) || 
+                    string.IsNullOrEmpty(newpost.Author)
+                    )
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@author", data.author);
-                        myCommand.Parameters.AddWithValue("@title", data.title);
-                        myCommand.Parameters.AddWithValue("@body", data.body);
-                        myCommand.Parameters.AddWithValue("@created_at", data.created_at);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    return BadRequest(" Please no null is accepted");
                 }
+                try
+                {
+                    _bContext.Post.Add(newpost);
+                    _bContext.SaveChanges();
+
+                    return Ok(newpost); 
+                }
+                catch (System.Exception exc)
+                {
+
+                    return BadRequest(exc.Message);
+                }
+                
             }
             catch (System.Exception ex)
             {
 
-                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
             
-
-            return new JsonResult("Post Created Successfuly");
         }
 
+        [Route("update")]
         [HttpPut]
-        public JsonResult Put(Post post)
+        public IActionResult put(PostModel post)
         {
-            string query = @"
-                update dbo.Post
-                set title = @title, author = @author, body = @body
-                where id = @id
-                
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
             try
             {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                var data = _bContext.Post.Find(post.id);
+                if (data is null)
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", post.id);
-                        myCommand.Parameters.AddWithValue("@title", post.title);
-                        myCommand.Parameters.AddWithValue("@author", post.author);
-                        myCommand.Parameters.AddWithValue("@body", post.body);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    return BadRequest("Incorrect Id");
                 }
+                data.Id = post.id;
+                data.Title = post.title;
+                data.Body = post.body;
+                data.Author = post.author;
+
+                if (string.IsNullOrEmpty(data.Title) ||
+                    string.IsNullOrEmpty(data.Body) ||
+                    string.IsNullOrEmpty(data.Author) ||
+                    data.Id == 0
+                    )
+                {
+                    return BadRequest(" Please null value is not accepted");
+                }
+                try
+                {
+                    
+                    _bContext.Post.Attach(data);
+                    _bContext.SaveChanges();
+
+                    return Ok(data);
+                }
+                catch (System.Exception exc)
+                {
+
+                    return BadRequest(exc.Message);
+                }
+
             }
-            catch (System.Exception ex)
+            catch (System.Exception exc)
             {
 
-                Console.WriteLine(ex.Message);
+                return BadRequest(exc.Message);
             }
-
-            return new JsonResult("Post Updated Successfuly");
         }
 
-        [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+
+        [Route("Delete/{id}")]
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            string query = @"
-                delete from dbo.Post
-                where id = @id
-                
-            ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("BlogAppCon");
-            SqlDataReader myReader;
-            try
-            {
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-                {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@id", id);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
+            var post = _bContext.Post.Find(id);
 
-                Console.WriteLine(ex.Message);
+            if (post is null)
+            {
+                return BadRequest("No Post was found");
             }
 
-            return new JsonResult("Post Deleted Successfuly");
+            _bContext.Post.Remove(post);
+            _bContext.SaveChanges();
+
+            return Ok("Post Deleted successfuly...");
         }
     }
 }

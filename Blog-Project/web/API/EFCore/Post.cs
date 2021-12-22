@@ -13,6 +13,6 @@ namespace API.EFCore
         public string Title { get; set; }
         public string Body { get; set; }
         public int Id { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
     }
 }
