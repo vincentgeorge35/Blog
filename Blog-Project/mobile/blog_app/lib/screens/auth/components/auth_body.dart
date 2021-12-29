@@ -1,5 +1,4 @@
 import 'package:blog_app/screens/auth/components/rounded_inputfield.dart';
-import 'package:blog_app/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:blog_app/screens/auth/components/background.dart';
 import 'package:flutter_svg/svg.dart';
@@ -51,10 +50,11 @@ class AuthBody extends StatelessWidget {
             obscureText: true,
           ),
           TextButton(
-            style: ButtonStyle(
-            ),
-            onPressed: () {},
-             child: Text('LOGIN')),
+              style: ButtonStyle(),
+              onPressed: () {
+                Navigator.pushNamed(context, '/dashboard');
+              },
+              child: Text('LOGIN')),
         ],
       ),
     );

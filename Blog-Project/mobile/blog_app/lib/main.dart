@@ -1,3 +1,4 @@
+import 'package:blog_app/screens/dashboard/dashboard.dart';
 import 'package:blog_app/screens/home/blog_home.dart';
 import 'package:blog_app/screens/auth/login.dart';
 import 'package:blog_app/shared/loading.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => Loading(),
         '/home': (context) => BlogHome(),
         '/login':(context) => Login(),
+        '/dashboard':(context) => Dashboard(),
       },
     );
   }

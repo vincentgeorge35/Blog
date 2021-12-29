@@ -23,14 +23,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17d8f851-16ab-4aa7-a2f3-efaa6e5d6482" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../.idea/Blog.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/mobile.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../mobile/.idea/mobile.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog_app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/blog_app/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/blog_app/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog_app/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/blog_app/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog_app/lib/screens/auth/components/auth_body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/blog_app/lib/screens/auth/components/auth_body.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,12 +70,14 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1458" y="92" width="1736" height="856" key="AVDManager" timestamp="1639589261336">
-      <screen x="1366" y="0" width="1920" height="1040" />
+    <state x="65" y="64" width="1236" height="600" key="AVDManager" timestamp="1640750210503">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="1458" y="92" width="1736" height="856" key="AVDManager/0.0.1366.728/1366.0.1920.1040@1366.0.1920.1040" timestamp="1639589261336" />
+    <state x="65" y="64" width="1236" height="600" key="AVDManager/0.0.1366.728@0.0.1366.728" timestamp="1640750210503" />
     <state x="500" y="278" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1639586238569">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
