@@ -10,40 +10,124 @@ class InformationScroller extends StatefulWidget {
 class _InformationScrollerState extends State<InformationScroller> {
   @override
   Widget build(BuildContext context) {
-    final infoHeight = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Row(
-          children: [
-            Container(
-              width: 200,
-              margin: EdgeInsets.only(right: 20),
-              height: infoHeight * 0.2,
-              decoration: BoxDecoration(color: Colors.purpleAccent[400]),
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  children: [Text('Number of Blog posts'), Text('30')],
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: FittedBox(
+          fit: BoxFit.fill,
+          alignment: Alignment.topCenter,
+          child: Row(
+            children: [
+              Container(
+                width: 230,
+                margin: EdgeInsets.only(right: 20),
+                height: size.height * 0.2,
+                decoration: BoxDecoration(
+                    color: Colors.purpleAccent[400],
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey, spreadRadius: 2),
+                    ],
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colors.blue,
+                        Colors.purple,
+                      ],
+                    )),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Number of Blog posts',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 3,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '30',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Roboto',
+                          fontSize: 40,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 200,
-              margin: EdgeInsets.only(right: 20),
-              height: infoHeight * 0.2,
-              decoration: BoxDecoration(color: Colors.purpleAccent[400]),
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Column(
-                  children: [Text('Number of Blog posts'), Text('30')],
+              Container(
+                width: 230,
+                margin: EdgeInsets.only(right: 20),
+                height: size.height * 0.2,
+                decoration: BoxDecoration(
+                    color: Colors.purpleAccent[400],
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey, spreadRadius: 2),
+                    ],
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colors.blue,
+                        Colors.orange,
+                      ],
+                    )),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Number of Authors',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 3,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        '30',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Roboto',
+                          fontSize: 40,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

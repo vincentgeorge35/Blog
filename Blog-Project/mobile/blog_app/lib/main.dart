@@ -1,8 +1,10 @@
+import 'package:blog_app/screens/dashboard/components/create_post.dart';
 import 'package:blog_app/screens/dashboard/dashboard.dart';
 import 'package:blog_app/screens/home/blog_home.dart';
 import 'package:blog_app/screens/auth/login.dart';
 import 'package:blog_app/shared/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:blog_app/screens/dashboard/components/edit_post.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,10 +21,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Loading(),
         '/home': (context) => BlogHome(),
-        '/login':(context) => Login(),
-        '/dashboard':(context) => Dashboard(),
+        '/login': (context) => Login(),
+        '/dashboard': (context) => Dashboard(),
+        '/edit_post': (context) => EditPost(),
+        '/create_post': (context) => CreatePost(),
       },
     );
   }
 }
-

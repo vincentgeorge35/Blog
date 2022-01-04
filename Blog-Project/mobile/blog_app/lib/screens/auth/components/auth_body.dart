@@ -52,7 +52,7 @@ class AuthBody extends StatelessWidget {
           TextButton(
               style: ButtonStyle(),
               onPressed: () {
-                Navigator.pushNamed(context, '/dashboard');
+                Navigator.popAndPushNamed(context, '/dashboard');
               },
               child: Text('LOGIN')),
         ],

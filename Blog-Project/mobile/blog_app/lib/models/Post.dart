@@ -42,4 +42,18 @@ List<Post> posts = [
       title: 'Atesunt Jume',
       body:
           'To raise African women to be passionate about their dreams and to fulfill their dreams regardless of their past, their current challenges or any form of pressure they are faced with.'),
+  Post(
+      id: 5,
+      author: 'Chelsea',
+      date: DateTime.now(),
+      title: 'Atesunt Jume',
+      body:
+          'To raise African women to be passionate about their dreams and to fulfill their dreams regardless of their past, their current challenges or any form of pressure they are faced with.'),
+  Post(
+      id: 6,
+      author: 'Man City',
+      date: DateTime.now(),
+      title: 'Atesunt Jume',
+      body:
+          'To raise African women to be passionate about their dreams and to fulfill their dreams regardless of their past, their current challenges or any form of pressure they are faced with.'),
 ];
