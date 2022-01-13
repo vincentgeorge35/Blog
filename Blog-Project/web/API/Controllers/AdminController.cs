@@ -37,7 +37,7 @@ namespace API.Controllers
                     password = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Hash)?.Value
                 };
 
-                
+
             }
 
             return null;
@@ -67,7 +67,7 @@ namespace API.Controllers
             return Ok(admin);
         }
 
-        [Route("create")]
+        [Route("create")]   
         [HttpPost]
         public IActionResult post(AdminModel admin)
         {
@@ -79,8 +79,8 @@ namespace API.Controllers
                 admin.password = BCrypt.Net.BCrypt.HashPassword(admin.password);
                 NewAdmin.Password = admin.password;
 
-                if (string.IsNullOrEmpty(NewAdmin.Name) || 
-                    string.IsNullOrEmpty(NewAdmin.Email) || 
+                if (string.IsNullOrEmpty(NewAdmin.Name) ||
+                    string.IsNullOrEmpty(NewAdmin.Email) ||
                     string.IsNullOrEmpty(NewAdmin.Password)
                     )
                 {
@@ -91,21 +91,21 @@ namespace API.Controllers
                     _bContext.Admin.Add(NewAdmin);
                     _bContext.SaveChanges();
 
-                    return Ok(NewAdmin); 
+                    return Ok(NewAdmin);
                 }
                 catch (System.Exception exc)
                 {
 
                     return BadRequest(exc.Message);
                 }
-                
+
             }
             catch (System.Exception ex)
             {
 
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
         [Route("update")]
@@ -135,7 +135,7 @@ namespace API.Controllers
                 }
                 try
                 {
-                    
+
                     _bContext.Admin.Attach(data);
                     _bContext.SaveChanges();
 

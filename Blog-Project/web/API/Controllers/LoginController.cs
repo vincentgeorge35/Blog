@@ -34,7 +34,7 @@ namespace API.Controllers
             if (user != null)
             {
                 var token = Generate(user);
-                
+
                 return Ok(token);
             }
             return NotFound("User not found");
@@ -98,7 +98,7 @@ namespace API.Controllers
 
                 Console.WriteLine(ex.Message);
             }
-            
+
             return null;
         }
     }

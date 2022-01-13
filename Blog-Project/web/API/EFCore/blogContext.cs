@@ -1,4 +1,5 @@
 ﻿using System;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -21,15 +22,8 @@ namespace API.EFCore
 
         public virtual DbSet<Admin> Admin { get; set; }
         public virtual DbSet<Post> Post { get; set; }
+        public virtual DbSet<Author> Author { get; set; }
 
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     if (!optionsBuilder.IsConfigured)
-        //     {
-
-        //         optionsBuilder.UseSqlServer("Data Source = localhost; Initial Catalog = blog; User Id = sa; password = ikenna123");
-        //     }
-        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
