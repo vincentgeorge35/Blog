@@ -1,4 +1,7 @@
+import 'package:blog_app/providers/author_provider.dart';
+import 'package:blog_app/providers/blog_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InformationScroller extends StatefulWidget {
   const InformationScroller({Key? key}) : super(key: key);
@@ -10,6 +13,9 @@ class InformationScroller extends StatefulWidget {
 class _InformationScrollerState extends State<InformationScroller> {
   @override
   Widget build(BuildContext context) {
+    // bring in provider
+    final BlogProvider _blogProvider = Provider.of<BlogProvider>(context);
+    final AuthorProvider _authorProvider = Provider.of<AuthorProvider>(context);
     Size size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
@@ -25,7 +31,7 @@ class _InformationScrollerState extends State<InformationScroller> {
               Container(
                 width: 230,
                 margin: EdgeInsets.only(right: 20),
-                height: size.height * 0.2,
+                height: size.height * 0.25,
                 decoration: BoxDecoration(
                     color: Colors.purpleAccent[400],
                     borderRadius: BorderRadius.circular(10),
@@ -63,7 +69,7 @@ class _InformationScrollerState extends State<InformationScroller> {
                         height: 10,
                       ),
                       Text(
-                        '30',
+                        (_blogProvider.posts.length).toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Roboto',
@@ -77,7 +83,7 @@ class _InformationScrollerState extends State<InformationScroller> {
               Container(
                 width: 230,
                 margin: EdgeInsets.only(right: 20),
-                height: size.height * 0.2,
+                height: size.height * 0.25,
                 decoration: BoxDecoration(
                     color: Colors.purpleAccent[400],
                     borderRadius: BorderRadius.circular(10),
@@ -115,7 +121,7 @@ class _InformationScrollerState extends State<InformationScroller> {
                         height: 10,
                       ),
                       Text(
-                        '30',
+                        '${_authorProvider.authors.length}',
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Roboto',

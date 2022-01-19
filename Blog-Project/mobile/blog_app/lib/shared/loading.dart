@@ -10,18 +10,12 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  getPosts() {
-    Future.delayed(Duration(seconds: 3),
-        () => Navigator.pushReplacementNamed(context, '/home'));
-  }
-
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
     super.initState();
-    getPosts();
   }
 
   @override
@@ -37,4 +31,3 @@ class _LoadingState extends State<Loading> {
     );
   }
 }
-

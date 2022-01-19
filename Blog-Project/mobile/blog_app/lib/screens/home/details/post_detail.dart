@@ -1,8 +1,7 @@
 import 'package:blog_app/models/Post.dart';
 import 'package:blog_app/shared/constants.dart';
+import 'package:blog_app/shared/post_info.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 
 class PostDetail extends StatelessWidget {
   final Post post;
@@ -22,67 +21,29 @@ class PostDetail extends StatelessWidget {
               color: Colors.transparent,
               margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
               child: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(7.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       post.body,
+                      textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 24.0,
-                        letterSpacing: 1.7,
-                        height: 1.5,
-                        wordSpacing: 2.0,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
-                    SizedBox(height: mDefaultSize * 2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.userAlt,
-                              color: Colors.amber[900],
-                              size: 18.0,
-                            ),
-                            SizedBox(width: mDefaultSize / 4),
-                            Text(
-                              '${post.author}',
-                              style: TextStyle(
-                                fontSize: 21.0,
-                                letterSpacing: 1.2,
-                                height: 1.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber[900],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.calendar,
-                              color: Colors.amber[900],
-                              size: 18.0,
-                            ),
-                            SizedBox(width: mDefaultSize / 4),
-                            Text(
-                              '${DateFormat.yMMMEd().format(post.date)}',
-                              style: TextStyle(
-                                fontSize: 21.0,
-                                letterSpacing: 1.2,
-                                height: 1.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber[900],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    SizedBox(height: mDefaultSize * 0.6),
+                    PostInfo(
+                      icon: Icons.person,
+                      text: post.author,
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: PostInfo(
+                        icon: Icons.date_range_outlined,
+                        text: post.date,
+                      ),
                     ),
                   ],
                 ),

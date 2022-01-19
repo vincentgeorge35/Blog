@@ -6176,3 +6176,8 @@ Blog-Project/web/SPA/node_modules/zone.js/README.md
 Blog-Project/web/SPA/node_modules/zone.js/dist/async-test.js
 Blog-Project/web/SPA/node_modules/zone.js/dist/fake-async-test.js
 Blog-Project/web/SPA/node_modules
+Blog-Project/web/API/appsettings.json
+Blog-Project/web/API/bin/Debug/netcoreapp3.1/API.dll
+Blog-Project/web/API/bin/Debug/netcoreapp3.1/API.pdb
+Blog-Project/web/API/obj/Debug/netcoreapp3.1/API.dll
+Blog-Project/web/API/obj/Debug/netcoreapp3.1/API.pdb

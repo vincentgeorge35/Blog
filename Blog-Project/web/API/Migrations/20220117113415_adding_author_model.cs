@@ -2,7 +2,7 @@
 
 namespace API.Migrations
 {
-    public partial class addingSecontAuthor : Migration
+    public partial class adding_author_model : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,9 +12,9 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: false)
+                    FirstName = table.Column<string>(maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(maxLength: 100, nullable: false),
+                    Age = table.Column<int>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {

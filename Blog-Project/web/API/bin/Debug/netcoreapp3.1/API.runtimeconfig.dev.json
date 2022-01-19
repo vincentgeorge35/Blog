@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\Ikenna Remigius\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Ikenna Remigius\\.nuget\\packages"
+      "C:\\Users\\Mirolic\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Mirolic\\.nuget\\packages"
     ]
   }
 }
